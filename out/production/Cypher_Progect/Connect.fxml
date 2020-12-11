@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="170.0" prefWidth="541.0" style="-fx-background-color: #2C3E50;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+
+<AnchorPane fx:id="con" prefHeight="145.0" prefWidth="541.0" style="-fx-background-color: #2C3E50;" visible="false" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Accordion />
+        <Label layoutX="93.0" layoutY="51.0" prefHeight="19.0" prefWidth="126.0" text="Enter the port" textFill="white">
+            <font>
+                <Font name="Berlin Sans FB Demi Bold" size="18.0" />
+            </font>
+        </Label>
+        <TextField fx:id="port" focusTraversable="false" layoutX="253.0" layoutY="49.0" prefHeight="25.0" prefWidth="139.0" promptText="port" style="-fx-background-color: #34495E; -fx-text-fill: #FDFEFE;" AnchorPane.bottomAnchor="107.0" AnchorPane.leftAnchor="253.0" AnchorPane.rightAnchor="149.0" AnchorPane.topAnchor="49.0" />
+        <Label layoutX="93.0" layoutY="95.0" prefHeight="25.0" prefWidth="114.0" text="Enter the ip" textFill="white">
+            <font>
+                <Font name="Berlin Sans FB Demi Bold" size="18.0" />
+            </font>
+        </Label>
+        <TextField fx:id="ip" focusTraversable="false" layoutX="253.0" layoutY="95.0" prefHeight="25.0" prefWidth="139.0" promptText="ip" style="-fx-background-color: #34495E; -fx-text-fill: #FDFEFE;" />
+        <Button id="btncon" layoutX="428.0" layoutY="124.0" mnemonicParsing="false" onAction="#Connect" prefHeight="25.0" prefWidth="73.0" style="-fx-background-radius: 12; -fx-background-color: green; -fx-text-fill: white;" text="Connect" AnchorPane.topAnchor="124.0">
+            <font>
+                <Font name="Berlin Sans FB Demi Bold" size="12.0" />
+            </font>
+        </Button>
+    <Label layoutX="198.0" layoutY="3.0" prefHeight="21.0" prefWidth="159.0" text="Connect to server" textFill="white">
+        <font>
+            <Font name="Berlin Sans FB Demi Bold" size="18.0" />
+        </font>
+    </Label>
+    </children>
+</AnchorPane>
+
+      <AnchorPane fx:id="view" prefHeight="145.0" prefWidth="541.0" style="-fx-background-color: #2C3E50;" visible="false">
+<children>
+    <Accordion />
+    <TextField fx:id="namefile" focusTraversable="false" layoutX="137.0" layoutY="74.0" prefHeight="25.0" prefWidth="192.0" promptText="File name" style="-fx-background-color: #34495E; -fx-text-fill: #FDFEFE;" AnchorPane.bottomAnchor="82.0" AnchorPane.leftAnchor="137.0" AnchorPane.rightAnchor="49.0" AnchorPane.topAnchor="74.0" />
+    <Label layoutX="206.0" layoutY="14.0" prefHeight="17.0" prefWidth="159.0" text="View Or Edit Text" textFill="WHITE">
+        <font>
+            <Font name="Berlin Sans FB Demi Bold" size="18.0" />
+        </font>
+    </Label>
+         <Button layoutX="373.0" layoutY="108.0" mnemonicParsing="false" onAction="#view" text="view" textFill="#008a0b">
+            <font>
+               <Font name="Berlin Sans FB Demi Bold" size="12.0" />
+            </font>
+         </Button>
+         <Button layoutX="454.0" layoutY="108.0" mnemonicParsing="false" onAction="#Edit" text="Edit" textFill="#078700">
+            <font>
+               <Font name="Berlin Sans FB Demi Bold" size="12.0" />
+            </font>
+         </Button>
+         <Label layoutX="2.0" layoutY="74.0" prefHeight="25.0" prefWidth="126.0" text="Enter file name" textFill="white">
+            <font>
+               <Font name="Berlin Sans FB Demi Bold" size="18.0" />
+            </font>
+         </Label>
+</children>
+</AnchorPane>
+    <AnchorPane fx:id="edit" layoutY="-7.0" prefHeight="145.0" prefWidth="541.0" style="-fx-background-color: #2C3E50;" visible="false">
+        <children>
+            <Accordion />
+            <Label layoutX="14.0" layoutY="73.0" prefHeight="21.0" prefWidth="139.0" text="Edit the text file" textFill="white">
+                <font>
+                    <Font name="Berlin Sans FB Demi Bold" size="18.0" />
+                </font>
+            </Label>
+            <TextField fx:id="EditField" alignment="TOP_LEFT" focusTraversable="false" layoutX="153.0" layoutY="64.0" prefHeight="72.0" prefWidth="355.0" promptText="Write the modification" style="-fx-background-color: #34495E; -fx-text-fill: #FDFEFE;" AnchorPane.bottomAnchor="59.0" AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="33.0" AnchorPane.topAnchor="64.0" />
+            <Label layoutX="225.0" layoutY="14.0" prefHeight="17.0" prefWidth="159.0" text="Edit Text" textFill="WHITE">
+                <font>
+                    <Font name="Berlin Sans FB Demi Bold" size="18.0" />
+                </font>
+            </Label>
+            <Button onAction="#Save" layoutX="442.0" layoutY="139.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="66.0" style="-fx-background-color: green; -fx-background-radius: 12; -fx-text-fill: white;" text="Save">
+                <font>
+                    <Font name="Berlin Sans FB Demi Bold" size="12.0" />
+                </font>
+            </Button>
+        </children>
+    </AnchorPane>
+    <AnchorPane fx:id="viewtext" layoutY="-7.0" prefHeight="145.0" prefWidth="541.0" style="-fx-background-color: #2C3E50;">
+        <children>
+            <Accordion />
+            <Label layoutX="14.0" layoutY="73.0" prefHeight="21.0" prefWidth="139.0" text="Text File : " textFill="white">
+                <font>
+                    <Font name="Berlin Sans FB Demi Bold" size="18.0" />
+                </font>
+            </Label>
+            <Label layoutX="225.0" layoutY="14.0" prefHeight="17.0" prefWidth="159.0" text="View Text" textFill="WHITE">
+                <font>
+                    <Font name="Berlin Sans FB Demi Bold" size="18.0" />
+                </font>
+            </Label>
+         <Label fx:id="file" layoutX="127.0" layoutY="57.0" prefHeight="73.0" prefWidth="355.0" text="Label" textFill="WHITE">
+            <font>
+               <Font name="Berlin Sans FB Demi Bold" size="18.0" />
+            </font>
+            <padding>
+               <Insets top="-20.0" />
+            </padding></Label>
+        </children>
+    </AnchorPane>
+
+        </AnchorPane>

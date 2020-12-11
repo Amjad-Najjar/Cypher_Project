@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="commons-codec-1.15">
+    <CLASSES>
+      <root url="jar://G:/ITE-FIFTH/Cypher/commons-codec-1.15.jar!/" />
+      <root url="jar://D:/Dwonloads/Console-0.2.jar!/" />
+      <root url="file://G:/ITE-FIFTH/Cypher/javafx-sdk-15.0.1/lib" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://G:/ITE-FIFTH/Cypher/javafx-sdk-15.0.1/lib" />
+    </SOURCES>
+    <jarDirectory url="file://G:/ITE-FIFTH/Cypher/javafx-sdk-15.0.1/lib" recursive="false" />
+    <jarDirectory url="file://G:/ITE-FIFTH/Cypher/javafx-sdk-15.0.1/lib" recursive="false" type="SOURCES" />
+  </library>
+</component>
