@@ -2,8 +2,7 @@ import org.apache.commons.codec.binary.Base64;
 
 import java.io.*;
 import java.net.Socket;
-import java.security.PublicKey;
-import java.security.SecureRandom;
+import java.security.*;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -15,13 +14,24 @@ public class Cypher_Server implements Runnable {
     static String Dir = "G:\\ITE-FIFTH\\Cypher\\Texts";
     private static Socket socket;
     private final boolean isRunning = false;
+    private static Signature sign;
+    private static PrivateKey pr_k;
+    private static PublicKey pu_k;
 
     Set<Files> MyFiles = new HashSet<Files>();
 
 
-    Cypher_Server(Socket socket) {
+    Cypher_Server(Socket socket) throws NoSuchAlgorithmException, InvalidKeyException {
         Cypher_Server.socket = socket;
         initMyfiles(Dir);
+        KeyPairGenerator key=KeyPairGenerator.getInstance("DSA");
+        key.initialize(2048);
+        KeyPair key_pair=key.generateKeyPair();
+        pr_k=key_pair.getPrivate();
+        pu_k=key_pair.getPublic();
+        sign=Signature.getInstance("SHA256withDSA");
+        sign.initSign(pr_k);
+
     }
 
     void initMyfiles(String dir) {
@@ -83,7 +93,10 @@ public class Cypher_Server implements Runnable {
             String Session_key;
             ObjectInputStream Client_PK = new ObjectInputStream(socket.getInputStream());
             C_PK=(PublicKey)Client_PK.readObject();
+            ObjectOutputStream Send_PK=new ObjectOutputStream(socket.getOutputStream());
+            Send_PK.writeObject(pu_k);
             System.out.println(C_PK);
+
             SecureRandom SR =new SecureRandom();
             Session_key= Base64.encodeBase64String(SR.generateSeed(40));
             ObjectOutputStream Send_Session_Key =new ObjectOutputStream(socket.getOutputStream());
@@ -103,6 +116,10 @@ public class Cypher_Server implements Runnable {
             Action action=(Action) object_in.readObject();
             DataOutputStream pr = new DataOutputStream(socket.getOutputStream());
             pr.writeUTF(Symmetric_Encrypt.encrypt(getTextFromName(a)));
+            sign.update(Base64.decodeBase64(getTextFromName(a)));
+            System.out.println(Base64.encodeBase64String(sign.sign()));
+            ObjectOutputStream send_sign=new ObjectOutputStream(socket.getOutputStream());
+            send_sign.writeObject(sign.sign());
 //            switch (action) {
 //                case View: {
 //                    PrintWriter pr = new PrintWriter(socket.getOutputStream(), true);

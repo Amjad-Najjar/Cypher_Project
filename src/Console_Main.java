@@ -23,17 +23,15 @@ public class Console_Main {
         }
     }
      public static void main(String[] args) throws Exception {
-        System.out.println("Client is running !!\nPlease Enter the Host ip and The Server Port");
-        Scanner in =new Scanner(System.in);
-        String host=in.nextLine();
-        int Port =in.nextInt();
-
-         Cypher_Client c= new Cypher_Client(host,Port);
+       ////System.out.println("Client is running !!\nPlease Enter the Host ip and The Server Port");
+       //// Scanner in =new Scanner(System.in);
+        ////String host=in.nextLine();
+        ////int Port =in.nextInt();
+        Cypher_Client c= new Cypher_Client("127.0.0.1",11111);
         System.out.println("Enter The name of file you Want to open then Enter if you want to 1 to edit or 2 view !!\n");
-        in =new Scanner(System.in);
+       Scanner in =new Scanner(System.in);
          String FileName=in.nextLine();
          in =new Scanner(System.in);
-
          int act =in.nextInt();
 
          Action action;

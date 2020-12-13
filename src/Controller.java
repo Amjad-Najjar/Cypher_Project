@@ -6,6 +6,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.security.SignatureException;
 
 public class Controller
 {
@@ -43,7 +44,7 @@ public void Connect(ActionEvent event) throws Exception {
     view.setVisible(true);
 
 }
-public void view(ActionEvent event) throws IOException {
+public void view(ActionEvent event) throws IOException, SignatureException, ClassNotFoundException {
     view.setVisible(false);
     String name=namefile.getText().toString();
    clientSaid.cypher_client.start_Client(name, Action.View);
