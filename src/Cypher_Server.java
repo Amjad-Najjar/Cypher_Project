@@ -1,8 +1,10 @@
+import CA.CertifecateAutherity;
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.*;
 import java.net.Socket;
 import java.security.*;
+import java.security.cert.X509Certificate;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -10,26 +12,27 @@ import java.util.stream.Collectors;
 
 public class Cypher_Server implements Runnable {
     private static final String key = "DudeIamEncrypted";
-    private static  RC4 Symmetric_Encrypt = new RC4(key.getBytes());
     static String Dir = "G:\\ITE-FIFTH\\Cypher\\Texts";
+    private static RC4 Symmetric_Encrypt = new RC4(key.getBytes());
     private static Socket socket;
-    private final boolean isRunning = false;
     private static Signature sign;
     private static PrivateKey pr_k;
     private static PublicKey pu_k;
-
+    private static PublicKey CAPK;
+    private static X509Certificate Server_cert;
+    private final boolean isRunning = false;
     Set<Files> MyFiles = new HashSet<Files>();
 
 
-    Cypher_Server(Socket socket) throws NoSuchAlgorithmException, InvalidKeyException {
+    Cypher_Server(Socket socket, KeyPair key_pair, X509Certificate cert, PublicKey CAPK) throws NoSuchAlgorithmException, InvalidKeyException, IOException, ClassNotFoundException {
+
         Cypher_Server.socket = socket;
+        Cypher_Server.Server_cert = cert;
+        Cypher_Server.CAPK = CAPK;
         initMyfiles(Dir);
-        KeyPairGenerator key=KeyPairGenerator.getInstance("DSA");
-        key.initialize(2048);
-        KeyPair key_pair=key.generateKeyPair();
-        pr_k=key_pair.getPrivate();
-        pu_k=key_pair.getPublic();
-        sign=Signature.getInstance("SHA256withDSA");
+        pr_k = key_pair.getPrivate();
+        pu_k = key_pair.getPublic();
+        sign = Signature.getInstance("SHA256withDSA");
         sign.initSign(pr_k);
 
     }
@@ -71,74 +74,55 @@ public class Cypher_Server implements Runnable {
 
     }
 
-    boolean get_Conniction_Status() {
-        return isRunning;
-    }
-
-    void Send_Response(int port, String SelectedName, Socket socket) throws IOException {
-
-        System.out.println(getTextFromName(SelectedName));
-        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-        out.println(getTextFromName(SelectedName));
-
-
-    }
-
-
     @Override
     public void run() {
         try {
 
             PublicKey C_PK;
             String Session_key;
+            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+            X509Certificate Client_Cert = (X509Certificate) inputStream.readObject();
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            outputStream.writeObject(Server_cert);
+            if (CertifecateAutherity.verfiy(Client_Cert, CAPK)) {
+                System.out.println("The Client Certifecate Has Been Verfied From CA  \n");
+            }
             ObjectInputStream Client_PK = new ObjectInputStream(socket.getInputStream());
-            C_PK=(PublicKey)Client_PK.readObject();
-            ObjectOutputStream Send_PK=new ObjectOutputStream(socket.getOutputStream());
+            C_PK = (PublicKey) Client_PK.readObject();
+            ObjectOutputStream Send_PK = new ObjectOutputStream(socket.getOutputStream());
             Send_PK.writeObject(pu_k);
-            System.out.println(C_PK);
-
-            SecureRandom SR =new SecureRandom();
-            Session_key= Base64.encodeBase64String(SR.generateSeed(40));
-            ObjectOutputStream Send_Session_Key =new ObjectOutputStream(socket.getOutputStream());
-            Send_Session_Key.writeObject(RSA.encrypt(Base64.decodeBase64(Session_key),C_PK));
-            System.out.println(Session_key);
-            Symmetric_Encrypt =new RC4(Session_key.getBytes());
+            SecureRandom SR = new SecureRandom();
+            Session_key = Base64.encodeBase64String(SR.generateSeed(40));
+            ObjectOutputStream Send_Session_Key = new ObjectOutputStream(socket.getOutputStream());
+            Send_Session_Key.writeObject(RSA.encrypt(Base64.decodeBase64(Session_key), C_PK));
+            System.out.println("Session Key Has Been Made and agreed  :  " + Session_key);
+            Symmetric_Encrypt = new RC4(Session_key.getBytes());
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             int cnt = 0;
             for (String a : getFileNames()) {
                 out.println(Symmetric_Encrypt.encrypt(a));
                 cnt++;
             }
-
             Scanner in = new Scanner(socket.getInputStream());
             String a = Symmetric_Encrypt.decrypt(in.nextLine());
-            ObjectInputStream object_in =new ObjectInputStream(socket.getInputStream());
-            Action action=(Action) object_in.readObject();
+            ObjectInputStream object_in = new ObjectInputStream(socket.getInputStream());
+            Action action = (Action) object_in.readObject();
             DataOutputStream pr = new DataOutputStream(socket.getOutputStream());
             pr.writeUTF(Symmetric_Encrypt.encrypt(getTextFromName(a)));
             sign.update(Base64.decodeBase64(getTextFromName(a)));
-            System.out.println(Base64.encodeBase64String(sign.sign()));
-            ObjectOutputStream send_sign=new ObjectOutputStream(socket.getOutputStream());
+            System.out.println("Server Signature :  " + Base64.encodeBase64String(sign.sign()));
+            ObjectOutputStream send_sign = new ObjectOutputStream(socket.getOutputStream());
             send_sign.writeObject(sign.sign());
-//            switch (action) {
-//                case View: {
-//                    PrintWriter pr = new PrintWriter(socket.getOutputStream(), true);
-//                    pr.println(Symmetric_Encrypt.encrypt(getTextFromName(Symmetric_Encrypt.decrypt(a))));
-//                    break;
-//                }
-//                case Edit: {
-                    String tmp="";
-//                    PrintWriter pr = new PrintWriter(socket.getOutputStream(), true);
-//                    pr.println(Symmetric_Encrypt.encrypt(getTextFromName(Symmetric_Encrypt.decrypt(a))));
-            if(action==Action.Edit){
-                    DataInputStream Data_in =new DataInputStream(socket.getInputStream());
-                    tmp=Symmetric_Encrypt.decrypt(Data_in.readUTF());
-                    File f =new File(Dir+"\\"+"Edited"+a);
-            FileWriter myWriter = new FileWriter(f);
-            myWriter.write(tmp);
-            myWriter.close();
-                    System.out.println("edited Sucessfully "+f.getName()+" "+tmp);}
-
+            String tmp = "";
+            if (action == Action.Edit) {
+                DataInputStream Data_in = new DataInputStream(socket.getInputStream());
+                tmp = Symmetric_Encrypt.decrypt(Data_in.readUTF());
+                File f = new File(Dir + "\\" + "Edited" + a);
+                FileWriter myWriter = new FileWriter(f);
+                myWriter.write(tmp);
+                System.out.println("Edited Sucessfully " + f.getName() + " " + tmp);
+                myWriter.close();
+            }
 
 
         } catch (Exception e) {
