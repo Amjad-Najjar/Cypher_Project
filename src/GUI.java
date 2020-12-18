@@ -1,3 +1,5 @@
+import Logic.Cypher_Client;
+
 public class GUI {
 
         public static int portcli;

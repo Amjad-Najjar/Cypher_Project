@@ -1,3 +1,6 @@
+import Logic.Action;
+import Logic.Cypher_Client;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Scanner;
@@ -37,7 +40,6 @@ public class Console_Main {
         int act = in.nextInt();
 
         Action action;
-        System.out.println(act);
         if (act == 1) {
             action = Action.Edit;
         } else {
