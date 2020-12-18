@@ -1,10 +1,9 @@
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-
+import Logic.Action;
 import java.io.IOException;
 import java.security.SignatureException;
 
@@ -54,17 +53,17 @@ public void view(ActionEvent event) throws IOException, SignatureException, Clas
 
 
 }
-public void Edit(ActionEvent event) throws IOException {
+public void Edit(ActionEvent event) throws IOException, SignatureException, ClassNotFoundException {
     view.setVisible(false);
     String name=namefile.getText().toString();
-    //clientSaid.cypher_client.start_Client(name, Action.Edit);
+    clientSaid.cypher_client.start_Client(name, Action.Edit);
     String content=clientSaid.cypher_client.getResponse();
     EditField.setText(content);
     edit.setVisible(true);
 }
 public void Save(ActionEvent event) throws IOException {
-    String content=EditField.getText().toString();
-    clientSaid.cypher_client.Send_Edited_Text(content);
+    clientSaid.cypher_client.Send_Edited_Text(EditField.getText().toString());
+    System.out.println("done");
 }
 
 }

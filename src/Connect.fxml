@@ -10,7 +10,7 @@
 
 <AnchorPane prefHeight="170.0" prefWidth="541.0" style="-fx-background-color: #2C3E50;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
 
-<AnchorPane fx:id="con" prefHeight="145.0" prefWidth="541.0" style="-fx-background-color: #2C3E50;" visible="false" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="con" prefHeight="145.0" prefWidth="541.0" style="-fx-background-color: #2C3E50;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Accordion />
         <Label layoutX="93.0" layoutY="51.0" prefHeight="19.0" prefWidth="126.0" text="Enter the port" textFill="white">
@@ -78,14 +78,14 @@
                     <Font name="Berlin Sans FB Demi Bold" size="18.0" />
                 </font>
             </Label>
-            <Button onAction="#Save" layoutX="442.0" layoutY="139.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="66.0" style="-fx-background-color: green; -fx-background-radius: 12; -fx-text-fill: white;" text="Save">
+            <Button layoutX="442.0" layoutY="139.0" mnemonicParsing="false" onAction="#Save" prefHeight="23.0" prefWidth="66.0" style="-fx-background-color: green; -fx-background-radius: 12; -fx-text-fill: white;" text="Save">
                 <font>
                     <Font name="Berlin Sans FB Demi Bold" size="12.0" />
                 </font>
             </Button>
         </children>
     </AnchorPane>
-    <AnchorPane fx:id="viewtext" layoutY="-7.0" prefHeight="145.0" prefWidth="541.0" style="-fx-background-color: #2C3E50;">
+    <AnchorPane fx:id="viewtext" layoutY="-7.0" prefHeight="145.0" prefWidth="541.0" style="-fx-background-color: #2C3E50;" visible="false">
         <children>
             <Accordion />
             <Label layoutX="14.0" layoutY="73.0" prefHeight="21.0" prefWidth="139.0" text="Text File : " textFill="white">

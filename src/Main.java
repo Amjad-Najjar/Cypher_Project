@@ -14,7 +14,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("Connect.fxml"));
         Scene scene=new Scene(root,541,170);
         window=primaryStage;
-        window.setTitle("Information Securit y");
+        window.setTitle("Information Security");
         window.setScene(scene);
         primaryStage.show();
     }
